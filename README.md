@@ -85,3 +85,10 @@ $ rails db:migrate VERSION=0
 
 - The guidelines above mean that we’ll usually write controller and model tests first and integration tests (which test functionality across models, views, and controllers) second.
     - Integration tests allow us to simulate the actions of a user interacting with our application using a web browser.
+
+
+## Finish static pages
+- The **rails** script generates a new controller with **rails generate controller ControllerName <optional action names>**.
+- New routes are defined in the file config/routes.rb.
+- Rails views can contain static HTML or embedded Ruby (ERb).
+- Test-driven development uses a “Red, Green, Refactor” cycle.
