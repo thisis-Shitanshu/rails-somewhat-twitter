@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rails',        '5.1.6'
+# The Bootstrap framework natively uses the Less CSS language for making dynamic stylesheets, but the Rails asset pipeline supports the (very similar) Sass language by default, so bootstrap-sass converts Less to Sass and makes all the necessary Bootstrap files available to the current application.
+gem 'bootstrap-sass', '3.3.7'
 gem 'puma',         '3.9.1'
 gem 'sass-rails',   '5.0.6'
 gem 'uglifier',     '3.2.0'
