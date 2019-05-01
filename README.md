@@ -236,3 +236,79 @@ $ rails db:migrate VERSION=0
     :name
     ```
 
+- Making model:
+```ruby
+$ rails generate model User name:string email:string
+
+# In contrast to the plural convention for controller names, model names are singular: a Users controller, but a User model.
+```
+
+- Migrating up the models:
+```
+$ rails db:migrate
+```
+
+- Rolling back Migrations:
+```
+$ rails db:rollback
+```
+
+- CRUD Operations:
+    - Create:
+        ```
+        user = User.create(name: "", email: "")
+        ```
+    - Read:
+        ```
+        User.find(1)
+        User.find_yb(name: "Shitanshu")
+        User.first
+        User.all
+        ```
+    - Update:
+        ```ruby
+        # First
+        $ user.emal = "new@emial.com"
+        $ user.reload.email
+        $ user.save
+
+        # Second
+        $ user.update_attributes(name: "The Dude", email: "dude@abides.org")
+
+        # Third: Single
+        $ user.update_attribute(:name, "El Duderino")
+
+        # Forth: Time
+        $ user.created_at = 1.year.ago(user.created_at)
+        ```
+
+- Rails Model Test:
+    ```
+    $ rails test:models
+    ```
+- After applying validation:
+    - User can be created but if user isn’t valid, an attempt to save the user to the database automatically fails.
+    - To get full error:
+        ```
+        $ u.errors.full_messages
+        ```
+
+    - The Active Record uniqueness validation does not guarantee uniqueness at the database level.
+        - We just need to enforce uniqueness at the database level as well as at the model level.
+    
+## Dealing with FULL_TABLE SCAN using Database indices:
+- To understand a database index, it’s helpful to consider the analogy of a book index.
+    - With a book index, on the other hand, you can just look up “foobar” in the index to see all the pages containing “foobar”. A database index works essentially the same way.
+
+- Adding migration structure to an existing model, so we need to create a migration directly using the migration generator:
+    ```
+    $ rails generate migration add_index_to_users_email
+    $ rails db:migrate
+    ```
+
+## has_secure_password
+- The ability to save a securely hashed password_digest attribute to the database.
+- A pair of virtual attributes18 (password and password_confirmation), including presence validations upon object creation and a validation requiring that they match.
+- An authenticate method that returns the user when the password is correct (and false otherwise).
+    - has_secure_password automatically adds an authenticate method to the corresponding model objects:
+        - This method determines if a given password is valid for a particular user by computing its digest and comparing the result to password_digest in the database.
