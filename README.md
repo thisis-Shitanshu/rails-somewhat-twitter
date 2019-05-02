@@ -367,3 +367,38 @@ DELETE	/users/1	    destroy	    user_path(user)	        delete user
 -  This allows us to specify which parameters are required and which ones are permitted. 
     - **In addition, passing in a raw params hash as above will cause an error to be raised, so that Rails applications are now immune to mass assignment vulnerabilities by default.**
     - To facilitate the use of these parameters, it’s conventional to introduce an auxiliary method called user_params (which returns an appropriate initialization hash) and use it in place of params[:user].
+
+
+# Professional-grade deployment
+add an important feature to the production application to make signup secure.
+
+## SSL in producation
+- use Secure Sockets Layer (SSL) to encrypt all relevant information before it leaves the local browser.
+    - Although we could use SSL on just the signup page;
+        -  it’s actually easier to implement it site-wide, which has the additional benefits of securing user login and making our application immune to the critical session hijacking vulnerability.
+- Although Heroku uses SSL by default, it doesn’t force browsers to use it.
+    - so any users hitting our application using regular http will be interacting insecurely with the site.
+
+```ruby
+# config/environments/production.rb
+    # Force all access to the app over SSL, use Strict-Transport-Security,
+    # and use secure cookies.
+    config.force_ssl = true
+```
+
+- At this stage;
+    - we need to set up SSL on the remote server.
+    - Setting up a production site to use SSL involves;
+        - purchasing and configuring an SSL certificate for your domain.
+
+- For an application running on a Heroku domain, we can piggyback on Heroku’s SSL certificate.
+    - when we deploy the application, SSL will automatically be enabled.
+
+## Production webserver
+- Heroku uses a pure-Ruby webserver called WEBrick.
+    - isn’t good at handling significant traffic.
+    - **Replace WEBrick with Puma, an HTTP server that is capable of handling a large number of incoming requests.**
+    (https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server)
+    
+## Production database configuration
+- Setup to usePostgresSQL
