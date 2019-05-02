@@ -312,3 +312,58 @@ $ rails db:rollback
 - An authenticate method that returns the user when the password is correct (and false otherwise).
     - has_secure_password automatically adds an authenticate method to the corresponding model objects:
         - This method determines if a given password is valid for a particular user by computing its digest and comparing the result to password_digest in the database.
+
+## Running a console in production:
+```
+$ heroku run rails console --sandbox
+```
+
+### Migrations allow us to modify our application’s data model.
+- Active Record validations allow us to place constraints on the data in our models.
+    - Common validations include presence, length, and format.
+- Defining a database index improves lookup efficiency while allowing enforcement of uniqueness at the database level.
+- We can add a secure password to a model using the built-in has_secure_password method.
+
+## Rails environments:
+- Rails comes equipped with three environments: test, development, and production.
+    - The default environment for the Rails console is development.
+- If you ever need to run a console in a different environment (to debug a test, for example), you can pass the environment as a parameter to the console script:
+    ```
+    $ rails console test
+    ```
+
+- development is the default environment for the Rails server, but you can also run it in a different environment:
+    ```
+    $ rails server --environment production
+    ```
+    - If you view your app running in production, it won’t work without a production database, which we can create by running rails db:migrate in production:
+        ```
+        $ rails db:migrate RAILS_ENV=production
+        ```
+
+## Following REST principle:
+- Resources are typically referenced using the resource name and a unique identifier.
+-  Here the show action is implicit in the type of request—when Rails’ REST features are activated, GET requests are automatically handled by the show action.
+
+- Routing for user resouces:
+```
+GET	    /users	        index	    users_path	            page to list all users
+
+GET	    /users/1	    show	    user_path(user)	        page to show user
+
+GET	    /users/new	    new	        new_user_path	        page to make a new user (signup)
+
+POST	/users	        create	    users_path	            create a new user
+
+GET	    /users/1/edit	edit	    edit_user_path(user)	page to edit user with id 1
+
+PATCH	/users/1	    update	    user_path(user)	        update user
+
+DELETE	/users/1	    destroy	    user_path(user)	        delete user
+```
+
+## Strong parameters:
+- In the controller layer.
+-  This allows us to specify which parameters are required and which ones are permitted. 
+    - **In addition, passing in a raw params hash as above will cause an error to be raised, so that Rails applications are now immune to mass assignment vulnerabilities by default.**
+    - To facilitate the use of these parameters, it’s conventional to introduce an auxiliary method called user_params (which returns an appropriate initialization hash) and use it in place of params[:user].
