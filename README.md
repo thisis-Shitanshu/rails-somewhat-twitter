@@ -402,3 +402,67 @@ add an important feature to the production application to make signup secure.
     
 ## Production database configuration
 - Setup to usePostgresSQL
+
+## RECAP:
+- We can interact with users as a resource through a standard set of REST URLs.
+- The form_for helper is used to generate forms for interacting with Active Record objects.
+- Signup failure renders the new user page and displays error messages automatically determined by Active Record.
+- Rails provides the flash as a standard way to display temporary messages.
+
+
+# Basic Login:
+- the application will maintain the logged-in state until the browser is closed by the user.
+
+## Sessions:
+- HTTP is a stateless protocol;
+    - This means there is no way within the Hypertext Transfer Protocol to remember a user’s identity from page to page.
+    - web applications requiring user login must use a session, which is a semi-permanent connection between two computers.
+        - The most common techniques for implementing sessions in Rails involve using cookies.
+            - Because cookies persist from one page to the next, they can store information (such as a user id).
+- It’s convenient to model sessions as a RESTful resource:
+    - visiting the login page will render a form for new sessions
+    - logging in will create a session
+    - logging out will destroy it
+- The Sessions resource will use cookies, unlike database by USer resource.
+
+### Steps:
+- constructing:
+    - a Sessions controller
+        ```
+        $ rails generate controller Sessions new
+        ```
+    - a login form
+        - The main difference between the session form and the signup form is that we have no Session model, and hence no analogue for the @user variable.
+            - As in the case of creating users (signup), the first step in creating sessions (login) is to handle invalid input.
+        - ERROR MESSAGE:
+            - flash persist for one request, but—unlike a redirect;
+                - re-rendering a template with render doesn’t count as a request.
+                    -  The result is that the flash message persists one request longer than we want.
+                - SOLUTION: flash.now
+            - Generate integration test for login form..
+                ```
+                $ rails generate integration_test users_login
+                >> TEST
+                $ rails test test/integration/users_login_test.rb
+                ```
+
+    - IMPLEMETING SESSION:
+        - Implementing sessions will involve defining a large number of related functions for use across multiple controllers and views.
+            - Ruby provides a module facility for packaging such functions in one place.
+                - APPLICATION_CONTROLLER
+                - a Sessions helper module was generated automatically when generating the Sessions controller.
+        - Saving currently logged-in userID.
+    - and Changing layout links.
+
+## Enabling Bootstrap Drop Down
+To activate the dropdown menu, we need to include Bootstrap’s custom JavaScript library in the Rails asset pipeline’s application.js file, as well as the jQuery library.
+
+## Using fixtures:
+The default Rails way to do this is to use fixtures, which are a way of organizing data to be loaded into the test database.
+- Complete test.
+- Login when signup.
+
+## RECAP:
+- Rails can maintain state from one page to the next using temporary cookies via the session method.
+- Using the session method, we can securely place a user id on the browser to create a temporary session.
+- Integration tests can verify correct routes, database updates, and proper changes to the layout.
