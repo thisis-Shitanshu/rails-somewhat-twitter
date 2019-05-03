@@ -466,3 +466,40 @@ The default Rails way to do this is to use fixtures, which are a way of organizi
 - Rails can maintain state from one page to the next using temporary cookies via the session method.
 - Using the session method, we can securely place a user id on the browser to create a temporary session.
 - Integration tests can verify correct routes, database updates, and proper changes to the layout.
+
+
+# 9
+- We’ll start by automatically remembering users when they log in.
+    -  a common model used by sites such as Bitbucket and GitHub.
+- We’ll then add the ability to optionally remember users using a “remember me” checkbox.
+    - a model used by sites such as Twitter and Facebook.
+
+## Remember token and digest
+- There are four main ways to steal cookies:
+    - using a packet sniffer to detect cookies being passed over insecure networks
+        - SOLUTION:SSL
+    - compromising a database containing remember tokens
+        - SOLUTION: Digest
+    - using cross-site scripting (XSS)
+        - SOLUTION: Protected by Ruby
+    - gaining physical access to a machine with a logged-in user
+        - SOLUTION: to cryptographically sign any potentially sensitive information we place on the browser.
+
+### Our plan for creating persistent sessions appears as follows:
+- Modify the model to have remember_digest.
+    - we’ve used a migration name that ends in _to_users to tell Rails that the migration is designed to alter the users table in the database.
+- Create a random string of digits for use as a remember token.
+    - Should be unique.
+- Place the token in the browser cookies with an expiration date far in the future.
+- Save the hash digest of the token to the database.
+- Place an encrypted version of the user’s id in the browser cookies.
+    ```
+    cookies.permanent.signed[:user_id] = user.id
+    ```
+- When presented with a cookie containing a persistent user id, find the user in the database using the given id, and verify that the remember token cookie matches the associated hash digest from the database.
+
+### Two subtle bugs
+- Multiple tab Logout: 
+    - Logging out only if the user is logged in.
+- Multiple browser logout.
+
