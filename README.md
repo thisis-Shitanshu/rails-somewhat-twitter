@@ -503,3 +503,35 @@ The default Rails way to do this is to use fixtures, which are a way of organizi
     - Logging out only if the user is logged in.
 - Multiple browser logout.
 
+### maintenance mode
+```
+$ heroku maintenance:on
+$ git push heroku
+$ heroku run rails db:migrate
+$ heroku maintenance:off
+```
+
+## 10
+- adding edit, update, index, and destroy actions.
+- Using faker gem  to make sample users with semi-realistic names and email addresses.
+    - In dev and production env as well.
+
+### Faker Gem:
+add a Ruby program to seed the database with sample users, for which Rails uses the standard file db/seeds.rb.
+
+```
+$ rails db:migrate:reset
+$ rails db:seed
+```
+
+### Pagination
+- Rails pagination method: will_paginate
+- To use it, we need to include both the will_paginate gem and bootstrap-will_paginate, which configures will_paginate to use Bootstrap’s pagination styles.
+
+### Deleting users
+- by admin user only.
+```
+$ rails generate migration add_admin_to_users admin:boolean
+```
+- Putting access control on destroy action
+
