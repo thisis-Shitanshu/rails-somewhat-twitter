@@ -535,3 +535,18 @@ $ rails generate migration add_admin_to_users admin:boolean
 ```
 - Putting access control on destroy action
 
+# 11
+- Steps for account activation:
+    - Start users in an “unactivated” state.
+    - When a user signs up, generate an activation token and corresponding activation digest.
+    - Save the activation digest to the database, and then send an email to the user with a link containing the activation token and user’s email address.
+        - The method is to add a User mailer using the Action Mailer library, which we’ll use in the Users controller create action to send an email with an activation link.
+    - When the user clicks the link, find the user by email address, and then authenticate the token by comparing with the activation digest.
+    - If the user is authenticated, change the status from “unactivated” to “activated”.
+
+## Email in Production
+- To send email in production, we’ll use SendGrid, which is available as an add-on at Heroku for verified accounts.
+    ```
+    heroku addons:create sendgrid:starter
+    ```
+- We need to fill out the SMTP settings for our production environment.
