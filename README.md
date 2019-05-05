@@ -550,3 +550,11 @@ $ rails generate migration add_admin_to_users admin:boolean
     heroku addons:create sendgrid:starter
     ```
 - We need to fill out the SMTP settings for our production environment.
+
+# 12
+- Password reset, the primary sequence goes like this:
+    1. When a user requests a password reset, find the user by the submitted email address.
+    1. If the email address exists in the database, generate a reset token and corresponding reset digest.
+    1. Save the reset digest to the database, and then send an email to the user with a link containing the reset token and user’s email address.
+    1. When the user clicks the link, find the user by email address, and then authenticate the token by comparing it to the reset digest.
+    1. If authenticated, present the user with the form for changing the password.
