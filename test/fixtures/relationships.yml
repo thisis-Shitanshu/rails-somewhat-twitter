@@ -1,0 +1,15 @@
+one:
+  follower: shitanshu
+  followed: lana
+
+two:
+  follower: shitanshu
+  followed: malory
+
+three:
+  follower: lana
+  followed: shitanshu
+
+four:
+  follower: archer
+  followed: shitanshu

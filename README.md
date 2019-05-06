@@ -589,3 +589,9 @@ We’ll be resizing images using the image manipulation program ImageMagick, whi
 
 ### Image upload in production
 we’ll use a cloud storage service to store images separately from our application.
+
+# Uploading in production issue.
+
+
+# 14
+## Realtionship model between user and user
