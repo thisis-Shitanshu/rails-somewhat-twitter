@@ -1,4 +1,4 @@
-# Some-what Twitter: Full-stcak rails application
+# Some-what Twitter: Full-stack rails application
 - Secure (some-what) twitter clone, build with complete Test Driven Development (TDD). 
 - Version Used:
     - ruby  2.3.3
