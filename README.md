@@ -16,7 +16,9 @@
 ## Application Screenshots:
 
 - Login Screen:
+
 ![](./appendix/1.png)
 
 - Home Screen:
+
 ![](./appendix/2.png)
