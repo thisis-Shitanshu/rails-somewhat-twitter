@@ -558,3 +558,34 @@ $ rails generate migration add_admin_to_users admin:boolean
     1. Save the reset digest to the database, and then send an email to the user with a link containing the reset token and user’s email address.
     1. When the user clicks the link, find the user by email address, and then authenticate the token by comparing it to the reset digest.
     1. If authenticated, present the user with the form for changing the password.
+
+
+# 13 Micropost
+- Relationship: User and Micropost
+    **micropost.user**	                    Returns the User object associated with the micropost
+    **user.microposts**	                    Returns a collection of the user’s microposts
+    **user.microposts.create(arg)**	        Creates a micropost associated with user
+    **user.microposts.create!(arg)**	    Creates a micropost associated with user (exception on failure)
+    **user.microposts.build(arg)**	        Returns a new Micropost object associated with user
+    **user.microposts.find_by(id: 1)**	    Finds the micropost with id 1 and user_id equal to user.id
+
+## Micropost Images
+ To get started, we need to include the carrierwave and mini_magick gems in the Gemfile.
+ And the fog gem needed for image upload in production.
+
+ - CarrierWave adds a Rails generator for creating an image uploader, which we’ll use to make an uploader for an image called picture
+    ```
+    $ rails generate uploader Picture
+    ```
+- To add the required picture attribute to the Micropost model, we generate a migration and migrate the development database:
+    ```
+    $ rails generate migration add_picture_to_microposts picture:string
+    $ rails db:migrate
+    ```
+
+### Image resizing
+We’ll be resizing images using the image manipulation program ImageMagick, which we need to install on the development environment.
+- when using Heroku for deployment ImageMagick comes pre-installed in production.
+
+### Image upload in production
+we’ll use a cloud storage service to store images separately from our application.
